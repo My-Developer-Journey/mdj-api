@@ -19,21 +19,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
-<<<<<<< HEAD
         private static final List<String> ALLOWED_METHODS = List.of(
                         "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD");
         private static final List<String> ALLOWED_ORIGINS = List.of("http://localhost:3000");
         private static final List<String> ALLOWED_HEADERS = List.of("Authorization", "Content-Type");
         private final AuthenticationProvider authenticationProvider;
         private final JWTAuthenticationFilter jwtAuthenticationFilter;
-=======
-    private static final List<String> ALLOWED_METHODS = List.of(
-            "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD");
-    private static final List<String> ALLOWED_ORIGINS = List.of("http://localhost:3000");
-    private static final List<String> ALLOWED_HEADERS = List.of("Authorization", "Content-Type");
-    private final AuthenticationProvider authenticationProvider;
-    private final JWTAuthenticationFilter jwtAuthenticationFilter;
->>>>>>> a1ea4d479440e7e63d848c25389037a52073111f
 
         public SecurityConfiguration(AuthenticationProvider authenticationProvider,
                         JWTAuthenticationFilter jwtAuthenticationFilter) {
