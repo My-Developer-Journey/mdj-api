@@ -32,10 +32,10 @@ public class SecurityConfiguration {
                 this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         }
 
-<<<<<<< HEAD
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 return http
+                                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                                 .csrf(csrf -> csrf.disable())
                                 .formLogin(form -> form.disable())
                                 .httpBasic(basic -> basic.disable())
@@ -58,35 +58,6 @@ public class SecurityConfiguration {
                                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                                 .build();
         }
-=======
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
-                .formLogin(form -> form.disable())
-                .httpBasic(basic -> basic.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/v2/api-docs",
-                                "/v3/api-docs/**",
-                                "/swagger-resources/**",
-                                "/configuration/**",
-                                "/swagger-ui/**",
-                                "/webjars/**",
-                                "/swagger-ui.html",
-                                "/favicon.ico",
-                                "/"
-                        ).permitAll()
-                        .requestMatchers("/**").permitAll() // 👈 thêm dòng này cuối cùng
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
->>>>>>> 6802e96f79e175d6dd34c8464cc1290e7309f8bc
 
         @Bean
         CorsConfigurationSource corsConfigurationSource() {
