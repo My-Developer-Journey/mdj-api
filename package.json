@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "dos2unix": "^1.1.2"
+  }
+}
