@@ -20,3 +20,4 @@ COPY --from=build /app/target/*.jar blog-api.jar
 COPY --from=build /app/wait-for-it.sh .
 
 EXPOSE 8080
+ENTRYPOINT ["./wait-for-it.sh", "redis", "6379", "--", "java", "-jar", "blog-api.jar"]
