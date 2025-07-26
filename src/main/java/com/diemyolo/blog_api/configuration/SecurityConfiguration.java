@@ -37,7 +37,6 @@ public class SecurityConfiguration {
                 this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         }
 
-<<<<<<< HEAD
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 return http
@@ -47,49 +46,20 @@ public class SecurityConfiguration {
                                 .httpBasic(basic -> basic.disable())
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers(
-                                                                "/v2/api-docs",
+                                                                "/swagger-ui/**",
                                                                 "/v3/api-docs/**",
                                                                 "/swagger-resources/**",
-                                                                "/configuration/**",
-                                                                "/swagger-ui/**",
                                                                 "/webjars/**",
                                                                 "/swagger-ui.html",
                                                                 "/favicon.ico",
-                                                                "/")
+                                                                "/v2/api-docs")
                                                 .permitAll()
-                                                .requestMatchers("/**").permitAll() // 👈 thêm dòng này cuối cùng
                                                 .anyRequest().authenticated())
                                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authenticationProvider(authenticationProvider)
                                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                                 .build();
         }
-=======
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
-                .formLogin(form -> form.disable())
-                .httpBasic(basic -> basic.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-resources/**",
-                                "/webjars/**",
-                                "/swagger-ui.html",
-                                "/favicon.ico",
-                                "/v2/api-docs"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
->>>>>>> fc6608a437ab1113bc388f275ea9cbd2fe811f81
 
         @Bean
         CorsConfigurationSource corsConfigurationSource() {
