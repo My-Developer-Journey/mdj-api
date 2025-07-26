@@ -37,7 +37,6 @@ public class SecurityConfiguration {
                 this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         }
 
-<<<<<<< HEAD
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 return http
@@ -53,7 +52,10 @@ public class SecurityConfiguration {
                                                                 "/webjars/**",
                                                                 "/swagger-ui.html",
                                                                 "/favicon.ico",
-                                                                "/v2/api-docs")
+                                                                "/v2/api-docs",
+                                                                "/api/authentications/sign-in",
+                                                                "/api/authentications/sign-up",
+                                                                "/")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
                                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -61,35 +63,6 @@ public class SecurityConfiguration {
                                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                                 .build();
         }
-=======
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
-                .formLogin(form -> form.disable())
-                .httpBasic(basic -> basic.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-resources/**",
-                                "/webjars/**",
-                                "/swagger-ui.html",
-                                "/favicon.ico",
-                                "/v2/api-docs",
-                                "/api/authentications/sign-in",
-                                "/api/authentications/sign-up",
-                                "/"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
->>>>>>> 8ef27b01c3dcd4f4385af4461a966b221a350c36
 
         @Bean
         CorsConfigurationSource corsConfigurationSource() {
