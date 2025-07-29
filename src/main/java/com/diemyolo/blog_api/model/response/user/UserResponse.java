@@ -9,15 +9,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class UserResponse {
+    private UUID id;
     private String email;
     private String displayName;
     private String phoneNumber;
     private @Nullable String avatar;
+    private @Nullable String avatarS3Key;
     private @Nullable String bio;
     private @Nullable String facebookUrl;
     private @Nullable String githubUrl;

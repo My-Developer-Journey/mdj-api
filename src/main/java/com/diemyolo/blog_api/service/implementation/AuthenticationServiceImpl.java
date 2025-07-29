@@ -17,7 +17,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -110,6 +109,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             if (!user.isEnabled()) {
                 String email = user.getEmail();
                 String verifyAttemptKey = "verify_attempts:" + email;
+                String verifyKey = "verify:" + email;
+
+                redisTemplate.delete(verifyKey);
 
                 Integer attempts = Optional.ofNullable(redisTemplate.opsForValue().get(verifyAttemptKey))
                         .map(Integer::valueOf)
