@@ -37,7 +37,6 @@ public class SecurityConfiguration {
                 this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         }
 
-<<<<<<< HEAD
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 return http
@@ -54,56 +53,27 @@ public class SecurityConfiguration {
                                                                 "/swagger-ui.html",
                                                                 "/favicon.ico",
                                                                 "/v2/api-docs",
-                                                                "/api/authentications/sign-in",
-                                                                "/api/authentications/sign-up",
                                                                 "/")
                                                 .permitAll()
+                                                .requestMatchers(
+                                                                "/api/authentications/sign-in",
+                                                                "/api/authentications/sign-up",
+                                                                "/api/authentications/verify")
+                                                .permitAll()
+                                                .requestMatchers(
+                                                                "/api/awss3/upload",
+                                                                "/api/awss3/test")
+                                                .permitAll()
+                                                .requestMatchers(
+                                                                "/api/admin/**",
+                                                                "/api/categories/**")
+                                                .hasRole("ADMIN")
                                                 .anyRequest().authenticated())
                                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authenticationProvider(authenticationProvider)
                                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                                 .build();
         }
-=======
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
-                .formLogin(form -> form.disable())
-                .httpBasic(basic -> basic.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-resources/**",
-                                "/webjars/**",
-                                "/swagger-ui.html",
-                                "/favicon.ico",
-                                "/v2/api-docs",
-                                "/"
-                        ).permitAll()
-                        .requestMatchers(
-                                "/api/authentications/sign-in",
-                                "/api/authentications/sign-up",
-                                "/api/authentications/verify"
-                        ).permitAll()
-                        .requestMatchers(
-                                "/api/awss3/upload",
-                                "/api/awss3/test"
-                        ).permitAll()
-                        .requestMatchers(
-                                "/api/admin/**",
-                                "/api/categories/**"
-                        ).hasRole("ADMIN")
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
->>>>>>> 425b35a63d1a8fafde62cf5b338050ed613d038a
 
         @Bean
         CorsConfigurationSource corsConfigurationSource() {
