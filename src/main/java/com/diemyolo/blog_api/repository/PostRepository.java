@@ -2,6 +2,7 @@ package com.diemyolo.blog_api.repository;
 
 import com.diemyolo.blog_api.entity.Enumberable.PostStatus;
 import com.diemyolo.blog_api.entity.Post;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
@@ -14,4 +15,5 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
     List<Post> findByPostStatusAndScheduledPublishDateBetween(PostStatus postStatus,
                                                               LocalDateTime start,
                                                               LocalDateTime end);
+    List<Post> findByAuthorId(UUID authorId, Sort sort);
 }

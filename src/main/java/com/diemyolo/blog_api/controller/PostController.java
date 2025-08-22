@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/api/posts")
@@ -41,7 +42,7 @@ public class PostController {
     @PutMapping("/{postId}")
     public ResponseEntity<ApiResponse<Object>> updatePost(
             @PathVariable UUID postId,
-            @Valid @RequestBody PostRequest request, @RequestParam(value = "file", required = false) MultipartFile thumbnailFile
+            @Valid @RequestPart PostRequest request, @RequestParam(value = "file", required = false) MultipartFile thumbnailFile
     ) {
         PostResponse response = postService.updatePost(postId, request, thumbnailFile);
         return ResponseEntity.ok(ApiResponse.success("Post updated successfully", response));
@@ -53,5 +54,12 @@ public class PostController {
     ) {
         PostResponse response = postService.removePost(postId);
         return ResponseEntity.ok(ApiResponse.success("Post removed successfully", response));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<List<PostResponse>>> getUserPosts() {
+        List<PostResponse> response = postService.getUserPosts();
+
+        return ResponseEntity.ok(ApiResponse.success("User post fetched!", response));
     }
 }
