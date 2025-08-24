@@ -22,8 +22,7 @@ public class PostController {
 
     @PostMapping()
     public ResponseEntity<ApiResponse<Object>> addPost(
-            @Valid @RequestPart PostRequest request, @RequestParam("file") MultipartFile thumbnailFile
-    ) {
+            @Valid @RequestPart PostRequest request, @RequestParam("file") MultipartFile thumbnailFile) {
         PostResponse response = postService.addPost(request, thumbnailFile);
 
         String message;
@@ -58,8 +57,7 @@ public class PostController {
     public ResponseEntity<ApiResponse<Object>> updatePostStatus(
             @PathVariable UUID postId,
             @RequestParam PostStatus status,
-            @RequestParam(required = false) String rejectedNote
-    ) {
+            @RequestParam(required = false) String rejectedNote) {
         PostResponse response = postService.updatePostStatus(postId, status, rejectedNote);
         return ResponseEntity.ok(ApiResponse.success("Post status updated successfully", response));
     }
@@ -67,22 +65,21 @@ public class PostController {
     @PutMapping("/{postId}")
     public ResponseEntity<ApiResponse<Object>> updatePost(
             @PathVariable UUID postId,
-            @Valid @RequestPart PostRequest request, @RequestParam(value = "file", required = false) MultipartFile thumbnailFile
-    ) {
+            @Valid @RequestPart PostRequest request,
+            @RequestParam(value = "file", required = false) MultipartFile thumbnailFile) {
         PostResponse response = postService.updatePost(postId, request, thumbnailFile);
         return ResponseEntity.ok(ApiResponse.success("Post updated successfully", response));
     }
 
     @DeleteMapping("/{postId}")
     public ResponseEntity<ApiResponse<Object>> removePost(
-            @PathVariable UUID postId
-    ) {
+            @PathVariable UUID postId) {
         PostResponse response = postService.removePost(postId);
         return ResponseEntity.ok(ApiResponse.success("Post removed successfully", response));
     }
 
-    @PostMapping()
-    public ResponseEntity<ApiResponse<List<PostResponse>>> addPost() {
+    @GetMapping()
+    public ResponseEntity<ApiResponse<List<PostResponse>>> getUserPosts() {
         List<PostResponse> response = postService.getUserPosts();
 
         return ResponseEntity.ok(ApiResponse.success("User post fetched!", response));
