@@ -9,7 +9,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/api/posts")
@@ -20,11 +22,36 @@ public class PostController {
 
     @PostMapping()
     public ResponseEntity<ApiResponse<Object>> addPost(
-            @Valid @RequestBody PostRequest request
+            @Valid @RequestPart PostRequest request, @RequestParam("file") MultipartFile thumbnailFile
     ) {
-        PostResponse response = postService.addPost(request);
+        PostResponse response = postService.addPost(request, thumbnailFile);
 
-        return ResponseEntity.ok(ApiResponse.success("Add post successfully, please wait for admin verification!", response));
+        String message;
+        if (response.getPostStatus() == PostStatus.DRAFT) {
+            message = "Save draft successfully!";
+        } else if (response.getPostStatus() == PostStatus.SUBMITTED) {
+            message = "Add post successfully, please wait for admin verification!";
+        } else {
+            message = "Post added successfully!";
+        }
+
+        return ResponseEntity.ok(ApiResponse.success(message, response));
+    }
+
+    @GetMapping("/draft")
+    public ResponseEntity<ApiResponse<Object>> checkDraftExist() {
+        PostResponse response = postService.checkDraftExist();
+
+        String message;
+        if (response == null) {
+            message = "No draft existed!";
+        } else if (response.getPostStatus() == PostStatus.SUBMITTED) {
+            message = "Draft found!";
+        } else {
+            message = "No draft existed!";
+        }
+
+        return ResponseEntity.ok(ApiResponse.success(message, response));
     }
 
     @PutMapping("/{postId}/status")
@@ -40,9 +67,9 @@ public class PostController {
     @PutMapping("/{postId}")
     public ResponseEntity<ApiResponse<Object>> updatePost(
             @PathVariable UUID postId,
-            @Valid @RequestBody PostRequest request
+            @Valid @RequestPart PostRequest request, @RequestParam(value = "file", required = false) MultipartFile thumbnailFile
     ) {
-        PostResponse response = postService.updatePost(postId, request);
+        PostResponse response = postService.updatePost(postId, request, thumbnailFile);
         return ResponseEntity.ok(ApiResponse.success("Post updated successfully", response));
     }
 
@@ -52,5 +79,12 @@ public class PostController {
     ) {
         PostResponse response = postService.removePost(postId);
         return ResponseEntity.ok(ApiResponse.success("Post removed successfully", response));
+    }
+
+    @PostMapping()
+    public ResponseEntity<ApiResponse<List<PostResponse>>> addPost() {
+        List<PostResponse> response = postService.getUserPosts();
+
+        return ResponseEntity.ok(ApiResponse.success("User post fetched!", response));
     }
 }

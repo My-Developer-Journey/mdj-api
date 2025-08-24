@@ -2,8 +2,14 @@ package com.diemyolo.blog_api.entity;
 
 import com.diemyolo.blog_api.entity.Enumberable.Gender;
 import com.diemyolo.blog_api.entity.Enumberable.PostStatus;
+import com.fasterxml.jackson.databind.JsonNode;
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +32,16 @@ public class Post extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Type(JsonBinaryType.class)
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "contentJson", columnDefinition = "jsonb")
+    private JsonNode contentJson;
+
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
+
+    @Column(name = "thumbnail_s3_key")
+    private String thumbnailS3Key;
 
     // SEO metadata
     @Column(name = "seo_title")
@@ -53,6 +67,16 @@ public class Post extends BaseEntity {
     @Builder.Default
     private List<Category> categories = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @OrderColumn(name = "tag_order")
+    @JoinTable(
+            name = "post_tags",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    @Builder.Default
+    private List<Tag> tags = new ArrayList<>();
+
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false)
     private PostStatus postStatus;
@@ -60,14 +84,17 @@ public class Post extends BaseEntity {
     @Column(name = "submitted_at")
     private LocalDateTime submittedAt;
 
+    @Column(name = "accepted_at")
+    private LocalDateTime acceptedAt;
+
     @Column(name = "rejected_at")
     private LocalDateTime rejectedAt;
 
     @Column(name = "rejected_note")
     private String rejectedNote;
 
-    @Column(name = "published_at")
-    private LocalDateTime publishedAt;
+    @Column(name = "scheduled_publish_date")
+    private LocalDateTime scheduledPublishDate;
 
     @Column(name = "view_count")
     @Builder.Default
