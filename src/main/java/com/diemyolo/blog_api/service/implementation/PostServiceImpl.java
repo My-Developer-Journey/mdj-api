@@ -40,22 +40,28 @@ public class PostServiceImpl implements PostService {
     private final CategoryRepository categoryRepository;
     private final TagRepository tagRepository;
     private final ChatClient chatClient;
+    private final AuthenticationService authenticationService;
+    private final ModelMapper modelMapper;
+    private final AWSS3Service awsS3Service;
 
-    @Autowired
-    private AuthenticationService authenticationService;
-
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    private AWSS3Service awsS3Service;
-
-    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, CategoryRepository categoryRepository, TagRepository tagRepository, ChatClient.Builder chatClientBuilder) {
+    public PostServiceImpl(
+            PostRepository postRepository,
+            UserRepository userRepository,
+            CategoryRepository categoryRepository,
+            TagRepository tagRepository,
+            ChatClient.Builder chatClientBuilder,
+            AuthenticationService authenticationService,
+            ModelMapper modelMapper,
+            AWSS3Service awsS3Service
+    ) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.tagRepository = tagRepository;
         this.chatClient = chatClientBuilder.build();
+        this.authenticationService = authenticationService;
+        this.modelMapper = modelMapper;
+        this.awsS3Service = awsS3Service;
     }
 
     // User function
@@ -117,7 +123,7 @@ public class PostServiceImpl implements PostService {
         } catch (CustomException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -133,7 +139,7 @@ public class PostServiceImpl implements PostService {
         } catch (CustomException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -206,7 +212,7 @@ public class PostServiceImpl implements PostService {
         } catch (CustomException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -233,7 +239,7 @@ public class PostServiceImpl implements PostService {
         } catch (CustomException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -253,7 +259,7 @@ public class PostServiceImpl implements PostService {
         } catch (CustomException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -264,7 +270,7 @@ public class PostServiceImpl implements PostService {
         } catch (CustomException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -286,7 +292,7 @@ public class PostServiceImpl implements PostService {
         } catch (CustomException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -330,7 +336,7 @@ public class PostServiceImpl implements PostService {
         } catch (CustomException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -378,7 +384,7 @@ public class PostServiceImpl implements PostService {
         } catch (CustomException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
