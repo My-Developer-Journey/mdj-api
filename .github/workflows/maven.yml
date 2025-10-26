@@ -32,7 +32,9 @@ jobs:
             -Dsonar.organization=${{ secrets.SONAR_ORG }} \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-            -Dsonar.coverage.exclusions=**/*
+          # ⚠️ THÊM HAI THUỘC TÍNH NÀY ĐỂ BỎ QUA VIỆC TÌM KIẾM VÀ GỬI BÁO CÁO COVERAGE:
+            -Dsonar.coverage.exclussions=**/* \
+            -Dsonar.surefire.reportPath=""
 
       - name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v6
