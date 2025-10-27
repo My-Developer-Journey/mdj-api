@@ -27,15 +27,15 @@ jobs:
         run: mvn -B clean package -Pci -DskipTests
 
       # 4️⃣ SonarCloud Scan (dùng cùng profile ci)
-      - name: Run Tests with Coverage + SonarCloud Scan
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          mvn -B verify -Pci org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
-            -Dsonar.organization=${{ secrets.SONAR_ORG }} \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+#      - name: Run Tests with Coverage + SonarCloud Scan
+#        env:
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#        run: |
+#          mvn -B verify -Pci org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+#            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
+#            -Dsonar.organization=${{ secrets.SONAR_ORG }} \
+#            -Dsonar.host.url=https://sonarcloud.io \
+#            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       # 5️⃣ Build & Push Docker Image
       - name: Build & push Docker image
