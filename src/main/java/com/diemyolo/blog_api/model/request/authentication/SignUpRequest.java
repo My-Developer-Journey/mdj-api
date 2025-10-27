@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class SignUpRequest {
     @NotBlank(message = "The email is required.")
     @Pattern(
-            regexp = "^[\\w.-]+@([\\w-]+\\.)+[\\w-]{2,4}$",
+            regexp = "^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{2,3}$",
             message = "The email is invalid."
     )
     @Schema(example = "example@gmail.com")

@@ -35,33 +35,34 @@ import java.util.regex.Pattern;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     private static final String PHONE_NUMBER_REGEX = "^\\d{10}$";
-    private static final String EMAIL_REGEX = "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$";
+    private static final String EMAIL_REGEX = "^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{2,3}$";
     private static final String PASSWORD_REGEX = "^(?=.*[!@#$%^&*()_+{}\\[\\]:;<>,.?/~-])(?=.{8,}).*$";
 
     private final UserRepository userRepository;
-
-    @Autowired
-    private JWTService jwtService;
-
-    @Autowired
-    private MailServiceImpl mailServiceImpl;
-
-    @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-
     private final PasswordEncoder passwordEncoder;
-
     private final AuthenticationManager authenticationManager;
+    private final ModelMapper modelMapper;
+    private final JWTService jwtService;
+    private final MailServiceImpl mailServiceImpl;
+    private final RedisTemplate<String, String> redisTemplate;
 
-    public AuthenticationServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
-                              AuthenticationManager authenticationManager, ModelMapper modelMapper) {
+    @Autowired
+    public AuthenticationServiceImpl(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            AuthenticationManager authenticationManager,
+            ModelMapper modelMapper,
+            JWTService jwtService,
+            MailServiceImpl mailServiceImpl,
+            RedisTemplate<String, String> redisTemplate
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.modelMapper = modelMapper;
+        this.jwtService = jwtService;
+        this.mailServiceImpl = mailServiceImpl;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -92,7 +93,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (CustomException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -153,7 +154,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (BadCredentialsException e) {
             throw new CustomException("Invalid email or password.", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

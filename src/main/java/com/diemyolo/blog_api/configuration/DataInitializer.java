@@ -68,9 +68,6 @@ public class DataInitializer {
                     .password(passwordEncoder.encode("123456"))
                     .build();
             userRepository.save(admin);
-            System.out.println("✅ Seeded admin user: " + adminEmail);
-        } else {
-            System.out.println("ℹ️ Admin user already exists: " + adminEmail);
         }
     }
 
@@ -85,9 +82,6 @@ public class DataInitializer {
                     .seoKeywords(seoKeywords)
                     .build();
             categoryRepository.save(category);
-            System.out.println("✅ Seeded category: " + name);
-        } else {
-            System.out.println("ℹ️ Category already exists: " + name);
         }
     }
 
@@ -98,9 +92,6 @@ public class DataInitializer {
                     .slug(slug)
                     .build();
             tagRepository.save(tag);
-            System.out.println("✅ Seeded tag: " + name);
-        } else {
-            System.out.println("ℹ️ Tag already exists: " + name);
         }
     }
 }
